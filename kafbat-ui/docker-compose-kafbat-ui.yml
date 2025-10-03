@@ -21,5 +21,4 @@ services:
     networks:
       backend:
         ipv4_address: ${KAFBAT_UI_BACKEND_IP}
-    depends_on:
-      - "${KAFKA_CONTAINER_NAME}"
+        

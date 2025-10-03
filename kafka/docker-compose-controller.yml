@@ -1,0 +1,68 @@
+x-kafka-controller-environment: &kafka-controller-environment
+  TZ: ${TZ}
+  KAFKA_PROCESS_ROLES: controller
+  KAFKA_LISTENERS: CONTROLLER://:9093
+  KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+  KAFKA_CONTROLLER_QUORUM_VOTERS: ${KAFKA_CONTROLLER_1_NODE_ID}@${KAFKA_CONTROLLER_1_CONTAINER_NAME}:9093,${KAFKA_CONTROLLER_2_NODE_ID}@${KAFKA_CONTROLLER_2_CONTAINER_NAME}:9093,${KAFKA_CONTROLLER_3_NODE_ID}@${KAFKA_CONTROLLER_3_CONTAINER_NAME}:9093
+  KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+x-kafka-controller-common: &kafka-controller-common
+  ulimits:
+    nofile:
+      soft: 65536
+      hard: 65536
+
+services:
+
+### Kafka controller ################################################
+  kafka-controller1:
+    build:
+      context: ${KAFKA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        KAFKA_VERSION: ${KAFKA_VERSION}
+    container_name: ${KAFKA_CONTROLLER_1_CONTAINER_NAME}
+    hostname: ${KAFKA_CONTROLLER_1_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    <<: *kafka-controller-common
+    environment:
+      <<: *kafka-controller-environment
+      KAFKA_NODE_ID: ${KAFKA_CONTROLLER_1_NODE_ID}
+    networks:
+      backend:
+        ipv4_address: ${KAFKA_CONTROLLER_1_BACKEND_IP}
+
+  kafka-controller2:
+    build:
+      context: ${KAFKA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        KAFKA_VERSION: ${KAFKA_VERSION}
+    container_name: ${KAFKA_CONTROLLER_2_CONTAINER_NAME}
+    hostname: ${KAFKA_CONTROLLER_2_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    <<: *kafka-controller-common
+    environment:
+      <<: *kafka-controller-environment
+      KAFKA_NODE_ID: ${KAFKA_CONTROLLER_2_NODE_ID}
+    networks:
+      backend:
+        ipv4_address: ${KAFKA_CONTROLLER_2_BACKEND_IP}
+
+  kafka-controller3:
+    build:
+      context: ${KAFKA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        KAFKA_VERSION: ${KAFKA_VERSION}
+    container_name: ${KAFKA_CONTROLLER_3_CONTAINER_NAME}
+    hostname: ${KAFKA_CONTROLLER_3_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    <<: *kafka-controller-common
+    environment:
+      <<: *kafka-controller-environment
+      KAFKA_NODE_ID: ${KAFKA_CONTROLLER_3_NODE_ID}
+    networks:
+      backend:
+        ipv4_address: ${KAFKA_CONTROLLER_3_BACKEND_IP}

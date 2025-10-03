@@ -12,12 +12,12 @@
 
 | status | service | backend ip | version | 备注 |
 |---|---|---|---|---|
-| &check; | kafka-broker1 | 172.25.110.3 | 4.1.0 | |
-| &check; | kafka-broker2 | 172.25.110.4 | 4.1.0 | |
-| &check; | kafka-broker3 | 172.25.110.5 | 4.1.0 | |
-| &check; | kafka-controller1 | 172.25.110.6 | 4.1.0 | |
-| &check; | kafka-controller2 | 172.25.110.7 | 4.1.0 | |
-| &check; | kafka-controller3 | 172.25.110.8 | 4.1.0 | |
+| &check; | kafka-controller1 | 172.25.110.3 | 4.1.0 | |
+| &check; | kafka-controller2 | 172.25.110.4 | 4.1.0 | |
+| &check; | kafka-controller3 | 172.25.110.5 | 4.1.0 | |
+| &check; | kafka-broker1 | 172.25.110.6 | 4.1.0 | |
+| &check; | kafka-broker2 | 172.25.110.7 | 4.1.0 | |
+| &check; | kafka-broker3 | 172.25.110.8 | 4.1.0 | |
 | &check; | kafbat-ui | 172.25.40.4 | latest | |
 
 # 使用到的镜像

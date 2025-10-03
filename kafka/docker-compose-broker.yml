@@ -1,0 +1,83 @@
+x-kafka-broker-environment: &kafka-broker-environment
+  TZ: ${TZ}
+  KAFKA_PROCESS_ROLES: broker
+  KAFKA_LISTENERS: 'PLAINTEXT://:19092,PLAINTEXT_HOST://:9092'
+  KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  KAFKA_CONTROLLER_QUORUM_VOTERS: ${KAFKA_CONTROLLER_1_NODE_ID}@${KAFKA_CONTROLLER_1_CONTAINER_NAME}:9093,${KAFKA_CONTROLLER_2_NODE_ID}@${KAFKA_CONTROLLER_2_CONTAINER_NAME}:9093,${KAFKA_CONTROLLER_3_NODE_ID}@${KAFKA_CONTROLLER_3_CONTAINER_NAME}:9093
+  KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+x-kafka-broker-common: &kafka-broker-common
+  ulimits:
+    nofile:
+      soft: 65536
+      hard: 65536
+  depends_on:
+    - ${KAFKA_CONTROLLER_1_CONTAINER_NAME}
+    - ${KAFKA_CONTROLLER_2_CONTAINER_NAME}
+    - ${KAFKA_CONTROLLER_3_CONTAINER_NAME}
+
+services:
+
+### Kafka broker ################################################
+  kafka-broker1:
+    build:
+      context: ${KAFKA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        KAFKA_VERSION: ${KAFKA_VERSION}
+    container_name: ${KAFKA_BROKER_1_CONTAINER_NAME}
+    hostname: ${KAFKA_BROKER_1_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    <<: *kafka-broker-common
+    ports:
+      - ${KAFKA_BROKER_1_PORT}:9092
+    environment:
+      <<: *kafka-broker-environment
+      KAFKA_NODE_ID: ${KAFKA_BROKER_1_NODE_ID}
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://${KAFKA_BROKER_1_CONTAINER_NAME}:19092,PLAINTEXT_HOST://localhost:${KAFKA_BROKER_1_PORT}'
+    networks:
+      backend:
+        ipv4_address: ${KAFKA_BROKER_1_BACKEND_IP}
+
+  kafka-broker2:
+    build:
+      context: ${KAFKA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        KAFKA_VERSION: ${KAFKA_VERSION}
+    container_name: ${KAFKA_BROKER_2_CONTAINER_NAME}
+    hostname: ${KAFKA_BROKER_2_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    <<: *kafka-broker-common
+    ports:
+      - ${KAFKA_BROKER_2_PORT}:9092
+    environment:
+      <<: *kafka-broker-environment
+      KAFKA_NODE_ID: ${KAFKA_BROKER_2_NODE_ID}
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://${KAFKA_BROKER_2_CONTAINER_NAME}:19092,PLAINTEXT_HOST://localhost:${KAFKA_BROKER_2_PORT}'
+    networks:
+      backend:
+        ipv4_address: ${KAFKA_BROKER_2_BACKEND_IP}
+
+  kafka-broker3:
+    build:
+      context: ${KAFKA_HOST_PATH}
+      args:
+        DOCKER_REGISTRY_URL: ${DOCKER_REGISTRY_URL}
+        KAFKA_VERSION: ${KAFKA_VERSION}
+    container_name: ${KAFKA_BROKER_3_CONTAINER_NAME}
+    hostname: ${KAFKA_BROKER_3_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY}
+    <<: *kafka-broker-common
+    ports:
+      - ${KAFKA_BROKER_3_PORT}:9092
+    environment:
+      <<: *kafka-broker-environment
+      KAFKA_NODE_ID: ${KAFKA_BROKER_3_NODE_ID}
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://${KAFKA_BROKER_3_CONTAINER_NAME}:19092,PLAINTEXT_HOST://localhost:${KAFKA_BROKER_3_PORT}'
+    networks:
+      backend:
+        ipv4_address: ${KAFKA_BROKER_3_BACKEND_IP}
+    
