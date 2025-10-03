@@ -12,6 +12,12 @@ x-kafka-controller-common: &kafka-controller-common
     nofile:
       soft: 65536
       hard: 65536
+  healthcheck:
+    test: ["CMD", "sh", "-c", "pgrep -f 'kafka.Kafka' > /dev/null || exit 1"]
+    interval: 15s
+    timeout: 5s
+    retries: 5
+    start_period: 10s
 
 services:
 

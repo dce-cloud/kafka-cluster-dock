@@ -17,6 +17,12 @@ x-kafka-broker-common: &kafka-broker-common
     - ${KAFKA_CONTROLLER_1_CONTAINER_NAME}
     - ${KAFKA_CONTROLLER_2_CONTAINER_NAME}
     - ${KAFKA_CONTROLLER_3_CONTAINER_NAME}
+  healthcheck:
+    test: ["CMD", "sh", "-c", "pgrep -f 'kafka.Kafka' > /dev/null || exit 1"]
+    interval: 15s
+    timeout: 5s
+    retries: 5
+    start_period: 10s
 
 services:
 
