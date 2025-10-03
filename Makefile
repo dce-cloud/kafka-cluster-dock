@@ -35,4 +35,4 @@ enter_controller3:
 
 .PHONY: enter_kafbat_ui
 enter_kafbat_ui:
-	@${DC_ENTER} ${KAFBAT_UI_CONTAINER_NAME} bash
+	@${DC_ENTER} ${KAFBAT_UI_CONTAINER_NAME} sh
