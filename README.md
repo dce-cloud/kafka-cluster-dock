@@ -18,7 +18,7 @@
 | &check; | kafka-broker1 | 172.25.110.6 | 4.1.0 | |
 | &check; | kafka-broker2 | 172.25.110.7 | 4.1.0 | |
 | &check; | kafka-broker3 | 172.25.110.8 | 4.1.0 | |
-| &check; | kafbat-ui | 172.25.40.4 | latest | |
+| &check; | kafbat-ui | 172.25.40.10 | latest | |
 
 # 使用到的镜像
 
