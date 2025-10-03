@@ -32,3 +32,7 @@ enter_controller2:
 	@${DC_ENTER} ${KAFKA_CONTROLLER_2_CONTAINER_NAME} bash
 enter_controller3:
 	@${DC_ENTER} ${KAFKA_CONTROLLER_3_CONTAINER_NAME} bash
+
+.PHONY: enter_kafbat_ui
+enter_kafbat_ui:
+	@${DC_ENTER} ${KAFBAT_UI_CONTAINER_NAME} bash
