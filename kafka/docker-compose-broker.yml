@@ -9,8 +9,11 @@ x-kafka-broker-environment: &kafka-broker-environment
   KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
 x-kafka-broker-common: &kafka-broker-common
+  volumes:
+    - "${KAFKA_HOST_PATH}/secrets:/etc/kafka/secrets"
+    - "${KAFKA_HOST_PATH}/config:/mnt/shared/config"
   ulimits:
-    nofile:
+    nofile: 
       soft: 65536
       hard: 65536
   depends_on:

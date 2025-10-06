@@ -8,6 +8,9 @@ x-kafka-controller-environment: &kafka-controller-environment
   KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
 
 x-kafka-controller-common: &kafka-controller-common
+  volumes:
+    - "${KAFKA_HOST_PATH}/secrets:/etc/kafka/secrets"
+    - "${KAFKA_HOST_PATH}/config:/mnt/shared/config"
   ulimits:
     nofile:
       soft: 65536
