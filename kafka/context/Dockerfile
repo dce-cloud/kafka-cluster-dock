@@ -1,6 +1,6 @@
 ARG DOCKER_REGISTRY_URL=
 ARG KAFKA_VERSION=4.1.0
-FROM ${DOCKER_REGISTRY_URL}apache/kafka-native:${KAFKA_VERSION}
+FROM ${DOCKER_REGISTRY_URL}apache/kafka:${KAFKA_VERSION}
 
 LABEL maintainer="zaizai <373045134@qq.com>"
 
@@ -15,9 +15,5 @@ RUN sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors4.tuna.tsin
     echo $TZ > /etc/timezone && \
     apk add --no-cache curl busybox-extras vim && \
     rm -rf /var/cache/apk/*
-
-COPY --link --chown=appuser:appuser kafka-bin/ /opt/kafka/bin/
-
-RUN chmod +x /opt/kafka/bin/*.sh
 
 USER appuser
