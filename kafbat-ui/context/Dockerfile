@@ -1,7 +1,20 @@
-ARG DOCKER_REGISTRY_URL=ghcr.io
+#ghcr.io
+ARG DOCKER_REGISTRY_URL=ghcr.registry.cyou
 ARG KAFKA_UI_VERSION=latest
 FROM ${DOCKER_REGISTRY_URL}/kafbat/kafka-ui:${KAFKA_UI_VERSION}
 
 LABEL maintainer="zz <373045134@qq.com>"
 
 ENV TZ=Asia/Shanghai
+
+USER root
+
+RUN sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors4.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache tzdata && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone && \
+    apk add --no-cache curl busybox-extras vim && \
+    rm -rf /var/cache/apk/*
+
+USER kafkaui
